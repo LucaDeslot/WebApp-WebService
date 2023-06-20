@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation de Vols et Hôtels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #reservation-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #reservation-form input {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        #reservation-form button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #results {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<h1>Réservation de Vols et Hôtels</h1>
+<form id="reservation-form">
+    <input type="text" id="location" placeholder="Location" required>
+    <input type="date" id="date-depart" placeholder="Date de départ" required>
+    <input type="date" id="date-retour" placeholder="Date de retour" required>
+    <button type="button" onclick="search()">Rechercher</button>
+    <button type="button" onclick="connexion()">Connexion</button>
+</form>
+
+<div id="results">
+    <!-- Les résultats de la recherche seront affichés ici -->
+</div>
+
+<script>
+    async function search() {
+        var location = document.getElementById("location").value;
+        var dateDepart = document.getElementById("date-depart").value;
+        var dateRetour = document.getElementById("date-retour").value;
+
+        var reservation = `location=${location}&date-depart=${dateDepart}&date-retour=${dateRetour}`;
+
+        var volsResponse = await fetch(`http://localhost:8080/vols?reservation=${reservation}`);
+        var vols = await volsResponse.json();
+
+        var hotelsResponse = await fetch(`http://localhost:8080/hotel?reservation=${reservation}`);
+        var hotels = await hotelsResponse.json();
+
+        document.getElementById("results").innerText = "Résultats pour " + location + " du " + dateDepart + " au " + dateRetour + ": " + vols.length + " vols, " + hotels.length + " hôtels.";
+    }
+
+    async function connexion() {
+
+        fetch('http://localhost:8081/auth/login')
+            .then(response => response.text())
+            .then(url => {
+                window.location = url;
+            });
+    }
+</script>
+</body>
+</html>
