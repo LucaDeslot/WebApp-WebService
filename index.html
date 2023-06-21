@@ -41,10 +41,11 @@
 <body>
 <h1>Réservation de Vols et Hôtels</h1>
 <form id="reservation-form">
-    <input type="text" id="location" placeholder="Location" required>
-    <input type="date" id="date-depart" placeholder="Date de départ" required>
-    <input type="date" id="date-retour" placeholder="Date de retour" required>
-    <button type="button" onclick="search()">Rechercher</button>
+    <input type="text" id="locationDeparture" placeholder="Departure Location" required>
+    <input type="text" id="locationArrival" placeholder="Arrival Location" required>
+    <!--<input type="date" id="date-departure" placeholder="Departure Date" required> -->
+    <input type="date" id="date" placeholder="Date" required>
+    <button type="button" onclick="search()">Search</button>
     <button type="button" onclick="connexion()">Connexion</button>
 </form>
 
@@ -54,19 +55,17 @@
 
 <script>
     async function search() {
-        var location = document.getElementById("location").value;
-        var dateDepart = document.getElementById("date-depart").value;
-        var dateRetour = document.getElementById("date-retour").value;
+        var locationDeparture = document.getElementById("locationDeparture").value;
+        var locationArrival = document.getElementById("locationArrival").value;
+        var date = document.getElementById("date").value;
 
-        var reservation = `location=${location}&date-depart=${dateDepart}&date-retour=${dateRetour}`;
 
-        var volsResponse = await fetch(`http://localhost:8080/vols?reservation=${reservation}`);
+
+        var volsResponse = await fetch(`http://localhost:8081/vols?locationDeparture=${locationDeparture}&locationArrival=${locationArrival}&date=${date}`);
+
         var vols = await volsResponse.json();
 
-        var hotelsResponse = await fetch(`http://localhost:8080/hotel?reservation=${reservation}`);
-        var hotels = await hotelsResponse.json();
-
-        document.getElementById("results").innerText = "Résultats pour " + location + " du " + dateDepart + " au " + dateRetour + ": " + vols.length + " vols, " + hotels.length + " hôtels.";
+        document.getElementById("results").innerText = "Résultats pour la recherche: " + vols.length + " vols. \n" + JSON.stringify(vols)
     }
 
     async function connexion() {
