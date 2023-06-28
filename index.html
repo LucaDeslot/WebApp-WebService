@@ -60,7 +60,11 @@
     // Ce code vérifie si le paramètre "success" est présent dans l'URL
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('user');
+    const state = urlParams.get('state');
     if (success) {
+        alert('Connexion réussie !');
+    }
+    if (state) {
         alert('Connexion réussie !');
     }
 
@@ -109,10 +113,11 @@
     }
 
     async function connexionKeyCloak() {
-        fetch('http://localhost:8081/auth/keycloak/login')
-            .then(response => {
-                window.location = url;
-            })
+        // fetch('http://localhost:8081/auth/keycloak/login')
+        //     .then(response => {
+        //         window.location = url;
+        //     })
+        window.location = 'http://localhost:8081/auth/keycloak/login';
     }
 </script>
 </body>
