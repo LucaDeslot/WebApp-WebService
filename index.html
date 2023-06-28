@@ -46,7 +46,8 @@
     <!--<input type="date" id="date-departure" placeholder="Departure Date" required> -->
     <input type="date" id="date" placeholder="Date" required>
     <button type="button" onclick="search()">Search</button>
-    <button type="button" onclick="connexion()">Connexion</button>
+    <button type="button" onclick="connexionGoogle()">Connexion Google</button>
+    <button type="button" onclick="connexionKeyCloak()">Connexion via KeyCloak</button>
 </form>
 
 <div id="results">
@@ -68,13 +69,20 @@
         document.getElementById("results").innerText = "Résultats pour la recherche: " + vols.length + " vols. \n" + JSON.stringify(vols)
     }
 
-    async function connexion() {
+    async function connexionGoogle() {
 
         fetch('http://localhost:8081/auth/login')
             .then(response => response.text())
             .then(url => {
                 window.location = url;
             });
+    }
+
+    async function connexionKeyCloak() {
+        fetch('http://localhost:8081/auth/keycloak/login')
+            .then(response => {
+                window.location = url;
+            })
     }
 </script>
 </body>
