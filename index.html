@@ -55,6 +55,19 @@
 </div>
 
 <script>
+    // ...
+
+    // Ce code vérifie si le paramètre "success" est présent dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('user');
+    if (success) {
+        alert('Connexion réussie !');
+    }
+
+    // ...
+</script>
+
+<script>
     async function search() {
         var locationDeparture = document.getElementById("locationDeparture").value;
         var locationArrival = document.getElementById("locationArrival").value;
