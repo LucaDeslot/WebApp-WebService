@@ -73,13 +73,30 @@
         var locationArrival = document.getElementById("locationArrival").value;
         var date = document.getElementById("date").value;
 
-
-
         var volsResponse = await fetch(`http://localhost:8081/vols?locationDeparture=${locationDeparture}&locationArrival=${locationArrival}&date=${date}`);
 
         var vols = await volsResponse.json();
 
-        document.getElementById("results").innerText = "Résultats pour la recherche: " + vols.length + " vols. \n" + JSON.stringify(vols)
+        var resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "Résultats pour la recherche: " + vols.length + " vols.";
+        vols.forEach(function(vol) {
+            var volDiv = document.createElement("div");
+            volDiv.innerText = JSON.stringify(vol);
+
+            var button = document.createElement("button");
+            button.innerText = "Réserver";
+            button.onclick = function() { reserver(vol.VolNumber); };
+
+            volDiv.appendChild(button);
+            resultsDiv.appendChild(volDiv);
+        });
+    }
+
+    async function reserver(volId) {
+        var response = await fetch(`http://localhost:8081/vols/reserved?${volId}`);
+        var result = await response.json();
+
+        alert("Réservation effectuée : "); + JSON.stringify(result);
     }
 
     async function connexionGoogle() {
